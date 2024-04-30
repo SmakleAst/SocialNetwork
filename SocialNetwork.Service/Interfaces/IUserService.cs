@@ -8,6 +8,6 @@ namespace SocialNetwork.Service.Interfaces
         Task<IBaseResponse<UserViewModel>> GetUserAccountInformation(int userId);
         Task<IBaseResponse<IEnumerable<MessageViewModel>>> GetAllReceivedMessages(int userId);
         Task<IBaseResponse<OneMessageViewModel>> GetOneMessage(int messageId);
-        Task<IBaseResponse<SendMessageViewModel>> SendMessage(SendMessageViewModel model)
+        Task<IBaseResponse<SendMessageViewModel>> SendMessage(SendMessageViewModel model);
     }
 }
