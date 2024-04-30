@@ -1,4 +1,25 @@
-﻿@page
-@model SocialNetwork.Views.Auth.AuthentificationPageModel
-@{
+﻿@{
+    ViewData["Title"] = "Аутентификация";
 }
+
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="card col-md-6">
+        <div class="card-body">
+            <form id="authForm">
+                <h5>Аутентификация:</h5>
+                <div class="col-md-12">
+                    <label class="col-form-label">Логин:</label>
+                    <input id="authLogin" name="Login" class="form-control mb-2" />
+                </div>
+                <div class="col-md-12">
+                    <label class="col-form-label">Пароль:</label>
+                    <input id="authPassword" name="Password" class="form-control mb-2" />
+                </div>
+
+                <div class="text-center">
+                    <button id="authButton" type="submit" class="btn btn-success mt-2">Войти</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
