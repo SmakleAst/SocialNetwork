@@ -57,7 +57,7 @@ namespace SocialNetwork.Service.Implementations
             }
         }
 
-        public async Task<IBaseResponse<UserViewModel>> RegistrationUser(RegistrationViewModel model)
+        public async Task<IBaseResponse<UserViewModel>> RegistrateUser(RegistrationViewModel model)
         {
             try
             {

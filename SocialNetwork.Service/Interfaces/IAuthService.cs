@@ -6,6 +6,6 @@ namespace SocialNetwork.Service.Interfaces
     public interface IAuthService
     {
         Task<IBaseResponse<UserViewModel>> AuthentificateUser(AuthViewModel model);
-        Task<IBaseResponse<UserViewModel>> RegistrationUser(RegistrationViewModel model);
+        Task<IBaseResponse<UserViewModel>> RegistrateUser(RegistrationViewModel model);
     }
 }
