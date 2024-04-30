@@ -50,7 +50,43 @@ namespace SocialNetwork.Service.Implementations
 
         public async Task<IBaseResponse<OneMessageViewModel>> GetOneMessage(int messageId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var messageEntity = await _messageRepository.GetAll()
+                    .FirstOrDefaultAsync(x => x.Id == messageId);
+
+                if (messageEntity == null)
+                {
+                    return new BaseResponse<OneMessageViewModel>
+                    {
+                        Description = "Сообщение не найдено",
+                        StatusCode = StatusCode.MessageNotFound
+                    };
+                }
+
+                var message = new OneMessageViewModel
+                {
+                    Id = messageEntity.Id,
+                    Header = messageEntity.Header,
+                    Body = messageEntity.Body,
+                    IsReading = messageEntity.IsReading,
+                    DateOf = messageEntity.DateOf.ToString("dd.MM.yyyy"),
+                };
+
+                return new BaseResponse<OneMessageViewModel>
+                {
+                    Data = message,
+                    StatusCode = StatusCode.Ok
+                };
+            }
+            catch (Exception exception)
+            {
+                return new BaseResponse<OneMessageViewModel>
+                {
+                    Description = exception.Message,
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
         }
 
         public async Task<IBaseResponse<UserViewModel>> GetUserAccountInformation(int userId)

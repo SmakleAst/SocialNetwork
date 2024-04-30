@@ -6,6 +6,6 @@
         public string Header { get; set; }
         public string Body { get; set; }
         public bool IsReading { get; set; }
-        public DateTime DateOf { get; set; }
+        public string DateOf { get; set; }
     }
 }
