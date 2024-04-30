@@ -91,7 +91,42 @@ namespace SocialNetwork.Service.Implementations
 
         public async Task<IBaseResponse<UserViewModel>> GetUserAccountInformation(int userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var userEntity = await _userRepository.GetAll()
+                    .FirstOrDefaultAsync(x => x.Id == userId);
+
+                if (userEntity == null)
+                {
+                    return new BaseResponse<UserViewModel>
+                    {
+                        Description = "Пользователь не найден",
+                        StatusCode = StatusCode.UserNotFound
+                    };
+                }
+
+                var user = new UserViewModel
+                {
+                    Id = userEntity.Id,
+                    Surname = userEntity.Surname,
+                    Name = userEntity.Name,
+                    Middlename = userEntity.Middlename,
+                };
+
+                return new BaseResponse<UserViewModel>
+                {
+                    Data = user,
+                    StatusCode = StatusCode.Ok
+                };
+            }
+            catch (Exception exception)
+            {
+                return new BaseResponse<UserViewModel>
+                {
+                    Description = exception.Message,
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
         }
 
         public async Task<IBaseResponse<SendMessageViewModel>> SendMessage(SendMessageViewModel model)
