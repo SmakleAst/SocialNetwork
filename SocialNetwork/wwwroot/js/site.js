@@ -1,12 +1,8 @@
 ﻿$(document).ready(function () {
     let userId = 0;
 
-    // Проверяем, что текущая страница - это страница пользователя
     if (window.location.pathname === "/User/Index") {
-        // Получаем userId из localStorage (или откуда у вас он сохраняется)
         userId = localStorage.getItem('userId');
-
-        // Вызываем функцию для получения информации о пользователе
         getUserAccount(userId);
     }
 
@@ -85,15 +81,63 @@
             success: function (response) {
                 var userInfo = response.data;
 
-                console.log(userInfo);
-
                 $('#userSurname').val(userInfo.surname);
                 $('#userName').val(userInfo.name);
                 $('#userMiddlename').val(userInfo.middlename);
             },
             error: function (response) {
-                // Обработка ошибки
             }
         });
     }
+
+    function model() {
+        return {
+            userId: localStorage.getItem('userId')
+        }
+    }
+
+    let messagesDataTable = $('#messagesTable').DataTable({
+        info: true,
+        searching: true,
+        paging: true,
+        fixedHeader: true,
+        keys: true,
+        language: {
+            "search": "Поиск:",
+            "lengthMenu": "Показать _MENU_ записей",
+            "info": "Показано с _START_ по _END_ из _TOTAL_ записей",
+            "infoFiltered": "(отфильтровано из _MAX_ записей)",
+            "paginate": {
+                "first": "Первая",
+                "previous": "Предыдущая",
+                "next": "Следующая",
+                "last": "Последняя"
+            }
+        },
+        ajax: {
+            url: '/User/GetAllMessages',
+            method: 'GET',
+            data: model,
+        },
+        columns: [
+            { data: 'id', visible: false },
+            { data: 'header' },
+            { data: 'dateOf' },
+            { data: 'fromUserLogin' },
+            {
+                data: null,
+                sortable: false,
+                render: function (data, type) {
+                    return '<button id="showMessage" class="btn btn-success btn-sm center-block">Посмотреть</button>'
+                }
+            }
+        ],
+        createdRow: function (nRow, data) {
+            for (var i = 0; i < messagesDataTable.columns().header().length - 1; i++) {
+                $('td', nRow).eq(i).css('cursor', 'pointer');
+
+                /*$('td', nRow).eq(i).on('click', null);*/
+            }
+        }
+    });
 });
