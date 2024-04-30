@@ -5,6 +5,7 @@ using SocialNetwork.Domain.Enum;
 using SocialNetwork.Domain.Response;
 using SocialNetwork.Domain.ViewModels;
 using SocialNetwork.Service.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace SocialNetwork.Service.Implementations
 {
@@ -131,7 +132,64 @@ namespace SocialNetwork.Service.Implementations
 
         public async Task<IBaseResponse<SendMessageViewModel>> SendMessage(SendMessageViewModel model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var userFrom = await _userRepository.GetAll()
+                    .FirstOrDefaultAsync(x => x.Id == model.Id);
+
+                if (userFrom == null)
+                {
+                    return new BaseResponse<SendMessageViewModel>
+                    {
+                        Description = "Пользователь отправитель не найден",
+                        StatusCode = StatusCode.UserNotFound
+                    };
+                }
+
+                await _userRepository.Attach(userFrom);
+
+                var userTo = await _userRepository.GetAll()
+                    .FirstOrDefaultAsync(x => x.Login.Equals(model.Login));
+
+                if (userFrom == null)
+                {
+                    return new BaseResponse<SendMessageViewModel>
+                    {
+                        Description = $"Пользователь {model.Login} не найден",
+                        StatusCode = StatusCode.UserNotFound
+                    };
+                }
+
+                await _userRepository.Attach(userTo);
+
+                var message = new MessageEntity
+                {
+                    FromUserId = userFrom.Id,
+                    FromUser = userFrom,
+                    ToUserId = userTo.Id,
+                    ToUser = userTo,
+                    Header = model.Header,
+                    Body = model.Body,
+                    IsReading = false,
+                    DateOf = DateTime.Now,
+                };
+
+                await _messageRepository.Create(message);
+
+                return new BaseResponse<SendMessageViewModel>
+                {
+                    Description = "Сообщение отправлено",
+                    StatusCode = StatusCode.Ok
+                };
+            }
+            catch (Exception exception)
+            {
+                return new BaseResponse<SendMessageViewModel>
+                {
+                    Description = exception.Message,
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
         }
     }
 }
