@@ -24,7 +24,7 @@ namespace SocialNetwork.Controllers
 
             if (response.StatusCode == Domain.Enum.StatusCode.Ok)
             {
-                return Ok(new { description = response.Description });
+                return Ok(new { description = response.Description, data = response.Data });
             }
 
             return BadRequest(new { description = response.Description });
@@ -32,13 +32,13 @@ namespace SocialNetwork.Controllers
 
         [Route("/Auth/Registration")]
         [HttpPost]
-        public async Task<IActionResult> Registration(RegistrationViewModel model)
+        public async Task<IActionResult> Registration([FromBody] RegistrationViewModel model)
         {
             var response = await _authService.RegistrateUser(model);
 
             if (response.StatusCode == Domain.Enum.StatusCode.Ok)
             {
-                return Ok(new { description = response.Description });
+                return Ok(new { description = response.Description, data = response.Data });
             }
 
             return BadRequest(new { description = response.Description });

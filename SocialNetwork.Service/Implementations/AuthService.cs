@@ -97,6 +97,7 @@ namespace SocialNetwork.Service.Implementations
 
                 return new BaseResponse<UserViewModel>()
                 {
+                    Description = $"Пользователь с логином {model.Login} создан",
                     Data = user,
                     StatusCode = StatusCode.Ok
                 };

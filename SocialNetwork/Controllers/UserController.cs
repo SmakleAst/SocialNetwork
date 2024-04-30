@@ -56,7 +56,7 @@ namespace SocialNetwork.Controllers
 
         [Route("/User/SendMessageToUser")]
         [HttpPost]
-        public async Task<IActionResult> SendMessageToUser(SendMessageViewModel model)
+        public async Task<IActionResult> SendMessageToUser([FromBody] SendMessageViewModel model)
         {
             var response = await _userService.SendMessage(model);
 

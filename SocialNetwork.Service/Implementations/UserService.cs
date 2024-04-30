@@ -135,7 +135,7 @@ namespace SocialNetwork.Service.Implementations
             try
             {
                 var userFrom = await _userRepository.GetAll()
-                    .FirstOrDefaultAsync(x => x.Id == model.Id);
+                    .FirstOrDefaultAsync(x => x.Id == model.FromUserId);
 
                 if (userFrom == null)
                 {
