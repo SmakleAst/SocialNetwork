@@ -1,4 +1,6 @@
-﻿namespace SocialNetwork.Domain.Response
+﻿using SocialNetwork.Domain.Enum;
+
+namespace SocialNetwork.Domain.Response
 {
     public class BaseResponse<T> : IBaseResponse<T>
     {
@@ -9,8 +11,8 @@
 
     public interface IBaseResponse<T>
     {
-        string Description { set; }
-        T Data { set; }
-        StatusCode StatusCode { set; }
+        string Description { get; }
+        T Data { get; }
+        StatusCode StatusCode { get; }
     }
 }
