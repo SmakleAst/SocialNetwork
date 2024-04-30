@@ -1,7 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using SocialNetwork.DAL.Interfaces;
+using SocialNetwork.DAL;
+using SocialNetwork.Domain.Entity;
+using SocialNetwork.DAL.Repositories;
+using SocialNetwork.Service.Implementations;
+using SocialNetwork.Service.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 var app = builder.Build();
 
@@ -12,6 +20,19 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+
+builder.Services.AddScoped<IBaseRepository<UserEntity>, UserRepository>();
+builder.Services.AddScoped<IBaseRepository<MessageEntity>, MessageRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+var connectionString = builder.Configuration.GetConnectionString("MSSQL");
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlServer(connectionString);
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
