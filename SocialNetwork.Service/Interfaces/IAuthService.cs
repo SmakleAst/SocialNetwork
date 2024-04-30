@@ -1,4 +1,5 @@
 ﻿using SocialNetwork.Domain.Response;
+using SocialNetwork.Domain.ViewModels;
 
 namespace SocialNetwork.Service.Interfaces
 {
