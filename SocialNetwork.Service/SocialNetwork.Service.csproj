@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SocialNetwork.DAL\SocialNetwork.DAL.csproj" />
     <ProjectReference Include="..\SocialNetwork.Domain\SocialNetwork.Domain.csproj" />
   </ItemGroup>
 
