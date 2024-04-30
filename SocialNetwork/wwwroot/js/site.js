@@ -84,6 +84,7 @@
                 $('#userSurname').val(userInfo.surname);
                 $('#userName').val(userInfo.name);
                 $('#userMiddlename').val(userInfo.middlename);
+                $('#sendMessageFromUserId').val(userInfo.id);
             },
             error: function (response) {
             }
@@ -139,5 +140,43 @@
                 /*$('td', nRow).eq(i).on('click', null);*/
             }
         }
+    });
+
+    $('#sendMessageForm').submit(function (e) {
+        e.preventDefault();
+        var url = '/User/SendMessageToUser';
+        
+        var fromUserId = parseInt($('#sendMessageFromUserId').val(), 10) || 0;
+        var login = $('#sendMessageLogin').val() || "";
+        var header = $('#sendMessageHeader').val() || "";
+        var body = $('#sendMessageBody').val() || "";
+
+        var formData = {
+            FromUserId: fromUserId,
+            Login: login,
+            Header: header,
+            Body: body
+        };
+
+        $.ajax({
+            url: url,
+            method: 'POST',
+            data: JSON.stringify(formData),
+            contentType: 'application/json',
+            success: function (response) {
+                Swal.fire({
+                    title: response.description,
+                    icon: 'success',
+                    confimButtonText: 'Ok'
+                })
+            },
+            error: function (response) {
+                Swal.fire({
+                    title: response.responseJSON.description,
+                    icon: 'error',
+                    confimButtonText: 'Ok'
+                })
+            }
+        });
     });
 });
