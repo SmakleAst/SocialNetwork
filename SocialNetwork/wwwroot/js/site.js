@@ -122,16 +122,15 @@
         },
         columns: [
             { data: 'id', visible: false },
-            { data: 'header' },
+            {
+                data: 'header',
+                render: function (data, type, row) {
+                    return '<a href="#" class="open-modal">' + data + '</a>';
+                }
+            },
             { data: 'dateOf' },
             { data: 'fromUserLogin' },
-            {
-                data: null,
-                sortable: false,
-                render: function (data, type) {
-                    return '<button id="showMessage" class="btn btn-success btn-sm center-block">Посмотреть</button>'
-                }
-            }
+            { data: 'isReading', visible: false }
         ],
         createdRow: function (nRow, data) {
             for (var i = 0; i < messagesDataTable.columns().header().length - 1; i++) {
@@ -139,7 +138,55 @@
 
                 /*$('td', nRow).eq(i).on('click', null);*/
             }
+
+            if (data.isReading === false) {
+                $(nRow).addClass('table-info'); // Добавляем класс для светло-синего цвета строки
+            }
         }
+    });
+
+    // Добавим обработчик событий для гиперссылок
+    $('#messagesTable').on('click', '.open-modal', function (e) {
+        e.preventDefault();
+
+        var dataTable = $('#messagesTable').DataTable();
+        var rowData = dataTable.row($(this).closest('tr')).data();
+        var messageId = rowData.id;
+
+        console.log(messageId);
+
+        //Изменить статус сообщения
+        $.ajax({
+            url: `/User/IsReadMessage/?messageId=${messageId}`,
+            method: 'PATCH',
+            success: function (response) {
+                $('#messagesTable').DataTable().ajax.reload();
+            },
+            error: function (response) {
+            }
+        });
+
+        //Заполнить содержимое формы
+        $.ajax({
+            url: `/User/GetMessage/?messageId=${messageId}`,
+            method: 'GET',
+            success: function (response) {
+                var messageInfo = response.data;
+
+                $('#messageHeader').val(messageInfo.header);
+                $('#messageBody').val(messageInfo.body);
+                $('#messageDate').val(messageInfo.dateOf);
+            },
+            error: function (response) {
+            }
+        });
+
+        // Откроем модальное окно
+        $('#messageModal').modal('show');
+    });
+
+    $('#messageModal .close').click(function () {
+        $('#messageModal').modal('hide');
     });
 
     $('#sendMessageForm').submit(function (e) {

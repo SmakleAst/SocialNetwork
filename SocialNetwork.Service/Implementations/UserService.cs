@@ -191,5 +191,41 @@ namespace SocialNetwork.Service.Implementations
                 };
             }
         }
+
+        public async Task<IBaseResponse<MessageViewModel>> SetIsReadMessage(int messageId)
+        {
+            try
+            {
+                var message = await _messageRepository.GetAll()
+                    .FirstOrDefaultAsync(x => x.Id == messageId);
+
+                if (message == null)
+                {
+                    return new BaseResponse<MessageViewModel>
+                    {
+                        Description = $"Сообщение не найдено",
+                        StatusCode = StatusCode.MessageNotFound
+                    };
+                }
+
+                message.IsReading = true;
+
+                await _messageRepository.Update(message);
+
+                return new BaseResponse<MessageViewModel>
+                {
+                    Description = $"Сообщение {message.Header} прочитано",
+                    StatusCode = StatusCode.Ok
+                };
+            }
+            catch (Exception exception)
+            {
+                return new BaseResponse<MessageViewModel>
+                {
+                    Description = exception.Message,
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+        }
     }
 }

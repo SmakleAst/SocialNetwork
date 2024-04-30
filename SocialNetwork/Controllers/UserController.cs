@@ -67,5 +67,19 @@ namespace SocialNetwork.Controllers
 
             return BadRequest(new { description = response.Description });
         }
+
+        [Route("/User/IsReadMessage")]
+        [HttpPatch]
+        public async Task<IActionResult> IsReadMessage([FromQuery] int messageId)
+        {
+            var response = await _userService.SetIsReadMessage(messageId);
+
+            if (response.StatusCode == Domain.Enum.StatusCode.Ok)
+            {
+                return Ok(new { description = response.Description });
+            }
+
+            return BadRequest(new { description = response.Description });
+        }
     }
 }
