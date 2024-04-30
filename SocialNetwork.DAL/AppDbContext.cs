@@ -14,25 +14,27 @@ namespace SocialNetwork.DAL
         {
             //Юзеры
             modelBuilder.Entity<UserEntity>()
-                .HasMany(a => a.Messages)
+                .HasMany(a => a.ReceivedMessages)
                 .WithOne(a => a.FromUser)
                 .HasForeignKey(c => c.FromUserId);
 
             modelBuilder.Entity<UserEntity>()
-                .HasMany(a => a.Messages)
+                .HasMany(a => a.SentMessages)
                 .WithOne(a => a.ToUser)
                 .HasForeignKey(c => c.ToUserId);
 
             //Сообщения
             modelBuilder.Entity<MessageEntity>()
-                .HasOne(a => a.FromUser)
-                .WithMany(a => a.Messages)
-                .HasForeignKey(c => c.FromUserId);
+                .HasOne(m => m.FromUser)
+                .WithMany(u => u.ReceivedMessages)
+                .HasForeignKey(m => m.FromUserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<MessageEntity>()
-                .HasOne(a => a.ToUser)
-                .WithMany(a => a.Messages)
-                .HasForeignKey(c => c.ToUserId);
+                .HasOne(m => m.ToUser)
+                .WithMany(u => u.SentMessages)
+                .HasForeignKey(m => m.ToUserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

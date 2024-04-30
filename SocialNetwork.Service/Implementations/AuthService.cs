@@ -81,7 +81,8 @@ namespace SocialNetwork.Service.Implementations
                     Surname = model.Surname,
                     Name = model.Name,
                     Middlename = model.Middlename,
-                    Messages = new List<MessageEntity>()
+                    ReceivedMessages = new List<MessageEntity>(),
+                    SentMessages = new List<MessageEntity>()
                 };
 
                 await _userRepository.Create(userEntity);

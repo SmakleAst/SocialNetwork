@@ -20,6 +20,7 @@ namespace SocialNetwork.Domain.Entity
 
         [StringLength(50)]
         public string Middlename { get; set; }
-        public List<MessageEntity> Messages { get; set; }
+        public List<MessageEntity> SentMessages { get; set; }
+        public List<MessageEntity> ReceivedMessages { get; set; }
     }
 }
