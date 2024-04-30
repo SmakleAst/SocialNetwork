@@ -1,4 +1,37 @@
-﻿@page
-@model SocialNetwork.Views.Auth.RegistrationPageModel
-@{
+﻿@{
+    ViewData["Title"] = "Регистрация";
 }
+
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="card col-md-6">
+        <div class="card-body">
+            <form id="registrationForm">
+                <h5>Регистрация:</h5>
+                <div class="col-md-12">
+                    <label class="col-form-label">Логин:</label>
+                    <input id="registrationLogin" name="Login" class="form-control mb-2" />
+                </div>
+                <div class="col-md-12">
+                    <label class="col-form-label">Пароль:</label>
+                    <input id="registrationPassword" name="Password" class="form-control mb-2" />
+                </div>
+                <div class="col-md-12">
+                    <label class="col-form-label">Фамилия:</label>
+                    <input id="registrationSurname" name="Surname" class="form-control mb-2" />
+                </div>
+                <div class="col-md-12">
+                    <label class="col-form-label">Имя:</label>
+                    <input id="registrationName" name="Name" class="form-control mb-2" />
+                </div>
+                <div class="col-md-12">
+                    <label class="col-form-label">Отчество:</label>
+                    <input id="registrationMiddlename" name="Middlename" class="form-control mb-2" />
+                </div>
+
+                <div class="text-center">
+                    <button id="registrationButton" type="submit" class="btn btn-success mt-2">Зарегистрироваться</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
