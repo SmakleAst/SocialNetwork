@@ -1,4 +1,68 @@
-﻿@page
-@model SocialNetwork.Views.User.IndexModel
-@{
+﻿@{
+    ViewData["Title"] = "Главная страница";
 }
+
+<div class="card">
+    <div class="card-body">
+        <h5>Пользователь:</h5>
+        <form id="userForm">
+            <div class="col-md-12">
+                <label class="col-form-label">Фамилия:</label>
+                <input id="userSurname" name="Surname" class="form-control mb-2" readonly />
+            </div>
+            <div class="col-md-12">
+                <label class="col-form-label">Имя:</label>
+                <input id="userName" name="Name" class="form-control mb-2" readonly />
+            </div>
+            <div class="col-md-12">
+                <label class="col-form-label">Отчество:</label>
+                <input id="userMiddlename" name="Middlename" class="form-control mb-2" readonly />
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+<div class="card">
+    <div class="card-body">
+        <h5>Отправить сообщение:</h5>
+        <form id="sendMessageForm">
+            <div class="col-md-12">
+                <input id="sendMessageFromUserId" name="FromUserId" class="form-control mb-2" hidden/>
+            </div>
+            <div class="col-md-12">
+                <label class="col-form-label">Логин получателя:</label>
+                <input id="sendMessageLogin" name="Login" class="form-control mb-2" />
+            </div>
+            <div class="col-md-12">
+                <label class="col-form-label">Заголовок письма:</label>
+                <input id="sendMessageHeader" name="Header" class="form-control mb-2" />
+            </div>
+            <div class="col-md-12">
+                <label class="col-form-label">Тело письма:</label>
+                <input id="sendMessageBody" name="Body" class="form-control mb-2" />
+            </div>
+
+            <div class="text-center">
+                <button id="sendMessageButton" type="submit" class="btn btn-success mt-2">Отправить</button>
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+<div class="card">
+    <div class="card-body">
+        <div id="messagesContainer" class="table-responsive">
+            <table id="messagesTable" class="table table-dark table-hover table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center">Id</th>
+                        <th class="text-center">Тема письма</th>
+                        <th class="text-center">Дата отправки</th>
+                        <th class="text-center">От</th>
+                        <th class="text-center">Посмотреть письмо</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
