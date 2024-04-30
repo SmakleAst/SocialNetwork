@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SocialNetwork.Domain.Filters;
 using SocialNetwork.Domain.Response;
 using SocialNetwork.Domain.ViewModels;
 using SocialNetwork.Service.Interfaces;
@@ -33,9 +34,9 @@ namespace SocialNetwork.Controllers
 
         [Route("/User/GetAllMessages")]
         [HttpGet]
-        public async Task<IActionResult> GetAllMessages([FromQuery] int userId)
+        public async Task<IActionResult> GetAllMessages(MessageFilter filter)
         {
-            var response = await _userService.GetAllReceivedMessages(userId);
+            var response = await _userService.GetAllReceivedMessages(filter);
 
             return Json(new { data = response.Data });
         }

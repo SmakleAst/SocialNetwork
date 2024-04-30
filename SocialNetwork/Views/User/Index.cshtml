@@ -1,4 +1,5 @@
-﻿@{
+﻿@using SocialNetwork.Domain.Enum
+@{
     ViewData["Title"] = "Главная страница";
 }
 
@@ -51,6 +52,24 @@
 <hr />
 <div class="card">
     <div class="card-body">
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label class="col-form-label">Логин:</label>
+                <input name="LoginFilter" type="text" class="form-control" />
+            </div>
+            <div class="form-group col-md-3">
+                <label class="col-form-label">С:</label>
+                <input name="FromFilter" type="text" class="form-control" readonly />
+            </div>
+            <div class="form-group col-md-3">
+                <label class="col-form-label">По:</label>
+                <input name="ToFilter" type="text" class="form-control" readonly />
+            </div>
+            <div class="form-group col-md-3">
+                <label class="col-form-label">Статус:</label>
+                <select id="messageStatusFilter" class="form-control mb-2" asp-items="Html.GetEnumSelectList<MessageStatus>()"></select>
+            </div>
+        </div>
         <div id="messagesContainer" class="table-responsive">
             <table id="messagesTable" class="table table-dark table-hover table-striped table-bordered">
                 <thead>

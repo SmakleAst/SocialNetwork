@@ -93,13 +93,43 @@
 
     function model() {
         return {
-            userId: localStorage.getItem('userId')
+            UserId: localStorage.getItem('userId'),
+            Login: $('input[name="LoginFilter"]').val(),
+            From: $('input[name="FromFilter"]').val(),
+            To: $('input[name="ToFilter"]').val(),
+            Status: $('#messageStatusFilter option:selected').val(),
         }
     }
 
+    // Активация Datepicker для полей "С" и "По"
+    $('[name="FromFilter"], [name="ToFilter"]').datepicker({
+        format: 'dd.mm.yyyy',
+        language: 'ru',
+        autoclose: true,
+        todayHighlight: true,
+        keyboardNavigation: false,
+        forceParse: false
+    });
+
+    $('input[name="LoginFilter"]').on('input', function () {
+        $('#messagesTable').DataTable().ajax.reload();
+    })
+
+    $('input[name="FromFilter"]').on('change', function () {
+        $('#messagesTable').DataTable().ajax.reload();
+    })
+
+    $('input[name="ToFilter"]').on('change', function () {
+        $('#messagesTable').DataTable().ajax.reload();
+    })
+
+    $('#messageStatusFilter').on('change', function () {
+        $('#messagesTable').DataTable().ajax.reload();
+    })
+
     let messagesDataTable = $('#messagesTable').DataTable({
         info: true,
-        searching: true,
+        searching: false,
         paging: true,
         fixedHeader: true,
         keys: true,
@@ -153,8 +183,6 @@
         var rowData = dataTable.row($(this).closest('tr')).data();
         var messageId = rowData.id;
 
-        console.log(messageId);
-
         //Изменить статус сообщения
         $.ajax({
             url: `/User/IsReadMessage/?messageId=${messageId}`,
@@ -204,6 +232,8 @@
             Header: header,
             Body: body
         };
+
+        console.log(formData);
 
         $.ajax({
             url: url,

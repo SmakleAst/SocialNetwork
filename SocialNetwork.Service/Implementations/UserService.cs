@@ -2,6 +2,8 @@
 using SocialNetwork.DAL.Interfaces;
 using SocialNetwork.Domain.Entity;
 using SocialNetwork.Domain.Enum;
+using SocialNetwork.Domain.Extensions;
+using SocialNetwork.Domain.Filters;
 using SocialNetwork.Domain.Response;
 using SocialNetwork.Domain.ViewModels;
 using SocialNetwork.Service.Interfaces;
@@ -17,12 +19,20 @@ namespace SocialNetwork.Service.Implementations
         public UserService(IBaseRepository<UserEntity> userRepository, IBaseRepository<MessageEntity> messageRepository) =>
             (_userRepository, _messageRepository) = (userRepository, messageRepository);
 
-        public async Task<IBaseResponse<IEnumerable<MessageViewModel>>> GetAllReceivedMessages(int userId)
+        public async Task<IBaseResponse<IEnumerable<MessageViewModel>>> GetAllReceivedMessages(MessageFilter filter)
         {
             try
             {
                 var messages = await _messageRepository.GetAll()
-                    .Where(x => x.ToUserId == userId)
+                    .Where(x => x.ToUserId == filter.UserId)
+                    .WhereIf(!string.IsNullOrEmpty(filter.Login),
+                        x => x.FromUser.Login.Contains(filter.Login))
+                    .WhereIf(!string.IsNullOrEmpty(filter.From),
+                        x => x.DateOf.Date >= DateTime.Parse(filter.From))
+                    .WhereIf(!string.IsNullOrEmpty(filter.To),
+                        x => x.DateOf.Date <= DateTime.Parse(filter.To))
+                    .WhereIf(filter.Status != MessageStatus.All,
+                        x => Convert.ToInt32(x.IsReading) == (int) filter.Status)
                     .Select(x => new MessageViewModel
                     {
                         Id = x.Id,
@@ -151,7 +161,7 @@ namespace SocialNetwork.Service.Implementations
                 var userTo = await _userRepository.GetAll()
                     .FirstOrDefaultAsync(x => x.Login.Equals(model.Login));
 
-                if (userFrom == null)
+                if (userTo == null)
                 {
                     return new BaseResponse<SendMessageViewModel>
                     {
