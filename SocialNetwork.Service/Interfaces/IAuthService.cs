@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SocialNetwork.Domain.Response;
 
 namespace SocialNetwork.Service.Interfaces
 {
-    internal interface IAuthService
+    public interface IAuthService
     {
+        Task<IBaseResponse<AuthViewModel>> AuthentificateUser(AuthViewModel model);
+        Task<IBaseResponse<RegistrationViewModel>> RegistrationUser(RegistrationViewModel model);
     }
 }
