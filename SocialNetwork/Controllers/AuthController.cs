@@ -16,6 +16,16 @@ namespace SocialNetwork.Controllers
             return View();
         }
 
+        public IActionResult AuthentificationPage()
+        {
+            return View();
+        }
+
+        public IActionResult RegistrationPage()
+        {
+            return View();
+        }
+
         [Route("/Auth/Authentification")]
         [HttpGet]
         public async Task<IActionResult> Authentification(AuthViewModel model)
